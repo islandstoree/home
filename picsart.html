@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Picsart Premium - Island Store</title>
+
+    <style>
+        /* RESET */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: white;
+        }
+
+        a { text-decoration: none; }
+
+        /* ================= LOADING ================= */
+        #loading-screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #050505;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: 0.8s;
+        }
+
+        #loading-screen.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-container { text-align: center; }
+
+        .eye-loader {
+            font-size: 60px;
+            color: #00e0ff;
+            animation: pulse 1.5s infinite;
+        }
+
+        .loader-container h2 {
+            margin-top: 15px;
+            color: #00e0ff;
+        }
+
+        .loader-container p {
+            color: #aaa;
+            margin-top: 5px;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            margin: 15px auto;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .loading-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg,#00e0ff,#00bcd4);
+            animation: loading 2s forwards;
+        }
+
+        @keyframes loading {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+
+        @keyframes pulse {
+            0%,100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* ================= NAVBAR ================= */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #111;
+            padding: 15px;
+        }
+
+        .logo {
+            color: #00e0ff;
+            font-weight: bold;
+        }
+
+        /* ================= HERO ================= */
+        .hero {
+            min-height: 35vh;
+            background:
+                linear-gradient(180deg, rgba(0,0,0,0.7), #0a0a0a),
+                url('https://images.unsplash.com/photo-1522199710521-72d69614c702') center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 40px;
+            color: #00e0ff;
+        }
+
+        /* ================= PRODUK ================= */
+        .produk {
+            background: #f2f2f2;
+            padding: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .card {
+            background: white;
+            color: black;
+            width: 260px;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            transition: 0.3s;
+        }
+
+        .card:hover { transform: translateY(-8px); }
+
+        .card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .card h2 { margin: 10px 0; }
+
+        .harga {
+            color: #ff9800;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .btn {
+            background: #00e0ff;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        /* ================= KONTAK ================= */
+        #kontak {
+            padding: 40px;
+            text-align: center;
+            background: #111;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            color: #777;
+        }
+    
+
+        /* ================= HAMBURGER ================= */
+        .menu-wrapper{position:relative}
+
+        .hamburger{
+            width:40px;height:40px;border:none;background:transparent;cursor:pointer;
+            display:flex;flex-direction:column;justify-content:center;gap:5px;
+        }
+
+        .hamburger span{
+            width:28px;height:3px;background:#fff;border-radius:5px;transition:0.3s;
+        }
+
+        .hamburger.active span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+        .hamburger.active span:nth-child(2){opacity:0}
+        .hamburger.active span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+
+        .dropdown-menu{
+            position:absolute;top:45px;right:0;background:#111;
+            border-radius:10px;padding:10px 0;display:none;flex-direction:column;
+            box-shadow:0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .dropdown-menu.show{display:flex}
+
+        .dropdown-menu a{color:white;padding:10px 20px;font-size:14px}
+        .dropdown-menu a:hover{background:#222;color:#00e0ff}
+
+    </style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loading-screen">
+    <div class="loader-container">
+        <div class="eye-loader">🎨</div>
+        <h2>PICSART PREMIUM</h2>
+        <p>Loading...</p>
+        <div class="loading-bar">
+            <div class="loading-fill"></div>
+        </div>
+    </div>
+</div>
+
+<!-- NAVBAR -->
+<header>
+    <div class="logo">Island Store 👁️‍🗨️</div>
+
+    <div class="menu-wrapper">
+        <button class="hamburger" id="hamburgerBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <div class="dropdown-menu" id="dropdownMenu">
+            <a href="index.html">Home</a>
+            <a href="nomer virtual.html">NOMER VIRTUAL</a>
+            <a href="SPORTY.html">SPOTIFY PREMIUM</a>
+            <a href="pln.html">PLN</a>
+            <a href="yt.html">YT PREMIUM</a>
+            <a href="picsart.html">PICSART PREMIUM</a>
+            <a href="canva.html">CANVA PREMIUM</a>
+        </div>
+    </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+    <div>
+        <h1>PICSART PREMIUM 🎨</h1>
+        <p>Edit Foto Tanpa Batas • Full Fitur • Murah</p>
+    </div>
+</div>
+
+<!-- PRODUK -->
+<section class="produk" id="produk">
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1522199710521-72d69614c702" alt="Picsart 1 Minggu">
+        <h2>Picsart 1 Minggu</h2>
+        <div class="fitur">
+            ✔ Full fitur premium<br>
+            ✔ Tanpa watermark<br>
+            ✔ Akses semua efek & filter<br>
+            ✔ Support 24 jam
+        </div>
+        <p class="harga">Rp 7.000</p>
+        <a href="https://wa.link/4jcyvs" class="btn" target="_blank">Beli Sekarang</a>
+    </div>
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1522199710521-72d69614c702" alt="Picsart 1 Bulan">
+        <h2>Picsart 1 Bulan</h2>
+        <div class="fitur">
+            ✔ Full fitur premium<br>
+            ✔ Tanpa watermark<br>
+            ✔ Akses semua efek & filter<br>
+            ✔ Lebih hemat
+        </div>
+        <p class="harga">Rp 17.000</p>
+        <a href="https://wa.link/ojnx1x" class="btn" target="_blank">Beli Sekarang</a>
+    </div>
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1522199710521-72d69614c702" alt="Picsart 1 Tahun">
+        <h2>Picsart 1 Tahun</h2>
+        <div class="fitur">
+            ✔ Full fitur premium<br>
+            ✔ Tanpa watermark<br>
+            ✔ Akses semua efek & filter<br>
+            ✔ Paling hemat
+        </div>
+        <p class="harga">Rp 50.000</p>
+        <a href="https://wa.link/qb6ty1" class="btn" target="_blank">Beli Sekarang</a>
+    </div>
+
+</section>
+
+<!-- KONTAK -->
+<section id="kontak">
+    <h2>Kontak</h2>
+    <p>📞 WhatsApp: 089513356031</p>
+    <p>💻 Developer: MR OSKAR</p>
+    <p>📧 Email: islandstore@email.com</p>
+    </section>
+
+<footer>
+© 2026 Island Store
+</footer>
+
+<script>
+window.addEventListener("load", () => {
+    setTimeout(() => {
+        document.getElementById("loading-screen").classList.add("hide");
+    }, 2000);
+});
+
+
+// HAMBURGER MENU
+const hamburgerBtn = document.getElementById("hamburgerBtn");
+const dropdownMenu = document.getElementById("dropdownMenu");
+
+hamburgerBtn.addEventListener("click", () => {
+    dropdownMenu.classList.toggle("show");
+    hamburgerBtn.classList.toggle("active");
+});
+
+document.addEventListener("click", function (e) {
+    if (!hamburgerBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        dropdownMenu.classList.remove("show");
+        hamburgerBtn.classList.remove("active");
+    }
+});
+
+</script>
+
+</body>
+</html>
